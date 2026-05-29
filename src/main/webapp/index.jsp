@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DevOps Learning Tracker</title>
-
   <style>
     * {
       margin: 0;
@@ -15,360 +14,269 @@
 
     body {
       background: #f4f7fb;
-      padding: 20px;
-      color: #333;
+      padding: 30px;
+      color: #222;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 10px;
-      color: #1e3a8a;
+      margin-bottom: 20px;
+      color: #1d3557;
     }
 
-    .subtitle {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #555;
-    }
-
-    .summary {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-    }
-
-    .summary-card {
-      background: white;
-      padding: 15px 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      min-width: 180px;
-      text-align: center;
-    }
-
-    .summary-card h2 {
-      font-size: 28px;
-      color: #2563eb;
-      margin-bottom: 5px;
-    }
-
-    .tracker-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 20px;
-    }
-
-    .tool-card {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 5px 12px rgba(0,0,0,0.08);
-      transition: transform 0.2s ease;
-    }
-
-    .tool-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .tool-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .progress-container {
+      width: 100%;
+      background: #ddd;
+      border-radius: 20px;
+      overflow: hidden;
       margin-bottom: 15px;
-    }
-
-    .tool-header h2 {
-      color: #111827;
-      font-size: 22px;
-    }
-
-    .progress-text {
-      font-size: 14px;
-      color: #555;
-      margin-bottom: 10px;
+      height: 30px;
     }
 
     .progress-bar {
-      width: 100%;
-      height: 12px;
-      background: #e5e7eb;
-      border-radius: 50px;
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
-
-    .progress-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #3b82f6, #2563eb);
-      transition: width 0.3s ease;
+      background: linear-gradient(90deg, #4caf50, #2ecc71);
+      text-align: center;
+      color: white;
+      line-height: 30px;
+      font-weight: bold;
+      transition: width 0.4s ease;
+    }
+
+    .summary {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    .category {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .category h2 {
+      margin-bottom: 15px;
+      color: #0d3b66;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
     }
 
     .topic {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 10px;
-      border-bottom: 1px solid #eee;
-      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f1f1;
     }
 
     .topic:last-child {
       border-bottom: none;
     }
 
-    .topic-name {
-      flex: 1;
-      font-size: 15px;
-    }
-
-    .status-btn {
-      padding: 8px 14px;
-      border: none;
-      border-radius: 8px;
+    input[type="checkbox"] {
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
       cursor: pointer;
-      font-weight: bold;
-      color: white;
-      transition: 0.3s ease;
-      min-width: 120px;
     }
 
-    .pending {
-      background: #ef4444;
+    label {
+      cursor: pointer;
+      width: 100%;
     }
 
     .completed {
-      background: #22c55e;
+      text-decoration: line-through;
+      color: #777;
     }
 
-    .reset-btn {
-      margin-top: 15px;
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 10px;
-      background: #111827;
-      color: white;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: bold;
-    }
-
-    .reset-btn:hover {
-      background: #1f2937;
-    }
-
-    @media (max-width: 600px) {
-      .topic {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .status-btn {
-        width: 100%;
-      }
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #666;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
 
-  <h1>DevOps Learning Tracker</h1>
-  <p class="subtitle">Track your DevOps revision, practice, and topic completion status</p>
+  <h1>DevOps Learning Progress Tracker</h1>
 
-  <div class="summary">
-    <div class="summary-card">
-      <h2 id="totalTopics">0</h2>
-      <p>Total Topics</p>
-    </div>
-
-    <div class="summary-card">
-      <h2 id="completedTopics">0</h2>
-      <p>Completed</p>
-    </div>
-
-    <div class="summary-card">
-      <h2 id="overallProgress">0%</h2>
-      <p>Overall Progress</p>
-    </div>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar">0%</div>
   </div>
 
-  <div class="tracker-container" id="trackerContainer"></div>
+  <div class="summary">
+    Completed: <span id="completedCount">0</span> / <span id="totalCount">0</span>
+  </div>
+
+  <!-- AWS -->
+  <div class="category">
+    <h2>AWS</h2>
+    <div class="topic"><input type="checkbox"><label>EC2</label></div>
+    <div class="topic"><input type="checkbox"><label>VPC</label></div>
+    <div class="topic"><input type="checkbox"><label>IAM</label></div>
+    <div class="topic"><input type="checkbox"><label>S3</label></div>
+    <div class="topic"><input type="checkbox"><label>Route 53</label></div>
+    <div class="topic"><input type="checkbox"><label>Load Balancer</label></div>
+    <div class="topic"><input type="checkbox"><label>Auto Scaling</label></div>
+    <div class="topic"><input type="checkbox"><label>CloudWatch</label></div>
+    <div class="topic"><input type="checkbox"><label>Security Groups & NACL</label></div>
+  </div>
+
+  <!-- Linux -->
+  <div class="category">
+    <h2>Linux</h2>
+    <div class="topic"><input type="checkbox"><label>File Permissions</label></div>
+    <div class="topic"><input type="checkbox"><label>User Management</label></div>
+    <div class="topic"><input type="checkbox"><label>find / grep / awk / sed</label></div>
+    <div class="topic"><input type="checkbox"><label>Process Management</label></div>
+    <div class="topic"><input type="checkbox"><label>Networking Commands</label></div>
+    <div class="topic"><input type="checkbox"><label>Systemctl & Services</label></div>
+    <div class="topic"><input type="checkbox"><label>Shell Scripting</label></div>
+  </div>
+
+  <!-- Git -->
+  <div class="category">
+    <h2>Git & GitHub</h2>
+    <div class="topic"><input type="checkbox"><label>git init / clone</label></div>
+    <div class="topic"><input type="checkbox"><label>git add / commit / push</label></div>
+    <div class="topic"><input type="checkbox"><label>Branching & Merging</label></div>
+    <div class="topic"><input type="checkbox"><label>Pull Requests</label></div>
+    <div class="topic"><input type="checkbox"><label>git reset / revert / restore</label></div>
+  </div>
+
+  <!-- Docker -->
+  <div class="category">
+    <h2>Docker</h2>
+    <div class="topic"><input type="checkbox"><label>Docker Installation</label></div>
+    <div class="topic"><input type="checkbox"><label>Dockerfile</label></div>
+    <div class="topic"><input type="checkbox"><label>Docker Images</label></div>
+    <div class="topic"><input type="checkbox"><label>Docker Containers</label></div>
+    <div class="topic"><input type="checkbox"><label>Docker Volumes</label></div>
+    <div class="topic"><input type="checkbox"><label>Docker Networking</label></div>
+    <div class="topic"><input type="checkbox"><label>Docker Compose</label></div>
+  </div>
+
+  <!-- Jenkins -->
+  <div class="category">
+    <h2>Jenkins</h2>
+    <div class="topic"><input type="checkbox"><label>Freestyle Jobs</label></div>
+    <div class="topic"><input type="checkbox"><label>Pipeline Jobs</label></div>
+    <div class="topic"><input type="checkbox"><label>Jenkinsfile</label></div>
+    <div class="topic"><input type="checkbox"><label>Plugins</label></div>
+    <div class="topic"><input type="checkbox"><label>SSH Publisher</label></div>
+    <div class="topic"><input type="checkbox"><label>CI/CD Pipeline</label></div>
+  </div>
+
+  <!-- Maven -->
+  <div class="category">
+    <h2>Maven</h2>
+    <div class="topic"><input type="checkbox"><label>pom.xml</label></div>
+    <div class="topic"><input type="checkbox"><label>Dependencies</label></div>
+    <div class="topic"><input type="checkbox"><label>clean install</label></div>
+    <div class="topic"><input type="checkbox"><label>WAR/JAR Build</label></div>
+  </div>
+
+  <!-- Kubernetes -->
+  <div class="category">
+    <h2>Kubernetes</h2>
+    <div class="topic"><input type="checkbox"><label>Pods</label></div>
+    <div class="topic"><input type="checkbox"><label>Deployments</label></div>
+    <div class="topic"><input type="checkbox"><label>Services</label></div>
+    <div class="topic"><input type="checkbox"><label>Ingress</label></div>
+    <div class="topic"><input type="checkbox"><label>ConfigMaps & Secrets</label></div>
+    <div class="topic"><input type="checkbox"><label>Namespaces</label></div>
+    <div class="topic"><input type="checkbox"><label>Helm Charts</label></div>
+  </div>
+
+  <!-- Terraform -->
+  <div class="category">
+    <h2>Terraform</h2>
+    <div class="topic"><input type="checkbox"><label>Providers</label></div>
+    <div class="topic"><input type="checkbox"><label>Resources</label></div>
+    <div class="topic"><input type="checkbox"><label>Variables</label></div>
+    <div class="topic"><input type="checkbox"><label>Outputs</label></div>
+    <div class="topic"><input type="checkbox"><label>terraform init/plan/apply</label></div>
+    <div class="topic"><input type="checkbox"><label>terraform fmt</label></div>
+    <div class="topic"><input type="checkbox"><label>State File</label></div>
+  </div>
+
+  <!-- Monitoring -->
+  <div class="category">
+    <h2>Monitoring & Logging</h2>
+    <div class="topic"><input type="checkbox"><label>Prometheus Installation</label></div>
+    <div class="topic"><input type="checkbox"><label>Grafana Dashboards</label></div>
+    <div class="topic"><input type="checkbox"><label>Alert Manager</label></div>
+  </div>
+
+  <!-- Other Tools -->
+  <div class="category">
+    <h2>Other Important Tools</h2>
+    <div class="topic"><input type="checkbox"><label>Ansible</label></div>
+    <div class="topic"><input type="checkbox"><label>SonarQube</label></div>
+    <div class="topic"><input type="checkbox"><label>JFrog Artifactory</label></div>
+    <div class="topic"><input type="checkbox"><label>Azure Basics</label></div>
+    <div class="topic"><input type="checkbox"><label>GitLab</label></div>
+    <div class="topic"><input type="checkbox"><label>GitOps with ArgoCD</label></div>
+    <div class="topic"><input type="checkbox"><label>Python for DevOps</label></div>
+    <div class="topic"><input type="checkbox"><label>Shell Scripting Advanced</label></div>
+  </div>
+
+  <footer>
+    DevOps Mastery Tracker
+  </footer>
 
   <script>
-    const devopsData = [
-      {
-        tool: 'Linux',
-        topics: [
-          'File Permissions',
-          'User Management',
-          'Process Management',
-          'Networking Commands',
-          'Shell Scripting'
-        ]
-      },
-      {
-        tool: 'Git',
-        topics: [
-          'Git Init',
-          'Git Clone',
-          'Git Commit',
-          'Git Branching',
-          'Git Merge'
-        ]
-      },
-      {
-        tool: 'Docker',
-        topics: [
-          'Docker Images',
-          'Docker Containers',
-          'Dockerfile',
-          'Docker Compose',
-          'Docker Volumes'
-        ]
-      },
-      {
-        tool: 'Jenkins',
-        topics: [
-          'Pipeline',
-          'Freestyle Job',
-          'Agent Node',
-          'Webhook',
-          'CI/CD Flow'
-        ]
-      },
-      {
-        tool: 'Kubernetes',
-        topics: [
-          'Pods',
-          'Deployments',
-          'Services',
-          'Ingress',
-          'ConfigMaps'
-        ]
-      },
-      {
-        tool: 'Terraform',
-        topics: [
-          'Providers',
-          'Resources',
-          'Variables',
-          'State File',
-          'Modules'
-        ]
-      },
-      {
-        tool: 'AWS',
-        topics: [
-          'IAM',
-          'EC2',
-          'S3',
-          'VPC',
-          'CloudWatch'
-        ]
-      },
-      {
-        tool: 'Ansible',
-        topics: [
-          'Inventory',
-          'Playbooks',
-          'Roles',
-          'Variables',
-          'Handlers'
-        ]
-      }
-    ];
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const progressBar = document.getElementById('progressBar');
+    const completedCount = document.getElementById('completedCount');
+    const totalCount = document.getElementById('totalCount');
 
-    const trackerContainer = document.getElementById('trackerContainer');
+    totalCount.innerText = checkboxes.length;
 
-    function loadTracker() {
-      trackerContainer.innerHTML = '';
+    function updateProgress() {
+      let completed = 0;
 
-      let totalTopics = 0;
-      let completedTopics = 0;
+      checkboxes.forEach((checkbox) => {
+        const label = checkbox.nextElementSibling;
 
-      devopsData.forEach((toolData, toolIndex) => {
-        const card = document.createElement('div');
-        card.className = 'tool-card';
-
-        let topicHTML = '';
-        let toolCompleted = 0;
-
-        toolData.topics.forEach((topic, topicIndex) => {
-          totalTopics++;
-
-          const storageKey = `tool_${toolIndex}_topic_${topicIndex}`;
-          const isCompleted = localStorage.getItem(storageKey) === 'true';
-
-          if (isCompleted) {
-            completedTopics++;
-            toolCompleted++;
-          }
-
-          topicHTML += `
-            <div class="topic">
-              <div class="topic-name">${topic}</div>
-              <button
-                class="status-btn ${isCompleted ? 'completed' : 'pending'}"
-                onclick="toggleStatus(${toolIndex}, ${topicIndex})">
-                ${isCompleted ? 'Completed' : 'Pending'}
-              </button>
-            </div>
-          `;
-        });
-
-        const progress = Math.round((toolCompleted / toolData.topics.length) * 100);
-
-        card.innerHTML = `
-          <div class="tool-header">
-            <h2>${toolData.tool}</h2>
-            <span>${progress}%</span>
-          </div>
-
-          <div class="progress-text">
-            ${toolCompleted} / ${toolData.topics.length} Topics Completed
-          </div>
-
-          <div class="progress-bar">
-            <div class="progress-fill" style="width:${progress}%"></div>
-          </div>
-
-          ${topicHTML}
-
-          <button class="reset-btn" onclick="resetTool(${toolIndex})">
-            Reset ${toolData.tool}
-          </button>
-        `;
-
-        trackerContainer.appendChild(card);
+        if (checkbox.checked) {
+          completed++;
+          label.classList.add('completed');
+        } else {
+          label.classList.remove('completed');
+        }
       });
 
-      document.getElementById('totalTopics').innerText = totalTopics;
-      document.getElementById('completedTopics').innerText = completedTopics;
+      const percentage = Math.round((completed / checkboxes.length) * 100);
 
-      const overall = Math.round((completedTopics / totalTopics) * 100) || 0;
-      document.getElementById('overallProgress').innerText = overall + '%';
+      progressBar.style.width = percentage + '%';
+      progressBar.innerText = percentage + '%';
+      completedCount.innerText = completed;
+
+      localStorage.setItem('devopsProgress', JSON.stringify(
+        Array.from(checkboxes).map(cb => cb.checked)
+      ));
     }
 
-    function toggleStatus(toolIndex, topicIndex) {
-      const storageKey = `tool_${toolIndex}_topic_${topicIndex}`;
-      const current = localStorage.getItem(storageKey) === 'true';
+    const savedState = JSON.parse(localStorage.getItem('devopsProgress'));
 
-      localStorage.setItem(storageKey, !current);
-      loadTracker();
-    }
-
-    function resetTool(toolIndex) {
-      devopsData[toolIndex].topics.forEach((_, topicIndex) => {
-        const storageKey = `tool_${toolIndex}_topic_${topicIndex}`;
-        localStorage.removeItem(storageKey);
+    if (savedState) {
+      checkboxes.forEach((checkbox, index) => {
+        checkbox.checked = savedState[index];
       });
-
-      loadTracker();
     }
 
-    loadTracker();
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', updateProgress);
+    });
+
+    updateProgress();
   </script>
 
 </body>
